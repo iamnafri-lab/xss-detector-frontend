@@ -22,7 +22,7 @@
             <mat-label>Enter Port Number</mat-label>
             <input matInput [(ngModel)]="port_no">
         </mat-form-field>
-        <button mat-raised-button color="warn" [disabled]="!port_no || !selected_interface">  
+        <button mat-raised-button color="warn" [disabled]="!port_no || !selected_interface" (click)="start()">  
             Start
         </button>
     </div>

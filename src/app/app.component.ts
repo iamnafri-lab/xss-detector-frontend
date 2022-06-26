@@ -1,3 +1,5 @@
+
+
 import { AppService } from './app.service';
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -11,39 +13,46 @@ import { throwToolbarMixedModesError } from '@angular/material/toolbar';
 export class AppComponent implements OnInit {
 
 
-  selected_interface : string = "";
-  status : boolean = false;
-  interfaces : string[] = [];
-  port_no : number;
+  selected_interface: string = "";
+  status: boolean = false;
+  interfaces: string[] = [];
+  port_no: number;
   constructor(
-    private _service : AppService,
-    private _snackBar : MatSnackBar,
-  ){
+    private _service: AppService,
+    private _snackBar: MatSnackBar,
+  ) {
 
   }
   title = 'xss-detector-frontend';
-  async getInterfaces(){
+  async getInterfaces() {
     this.interfaces = await this._service.getInterfaces();
   }
 
-  async retry(){
-    try{
+  async retry() {
+    try {
       this.status = false;
       this.status = await this._service.ping();
       this._snackBar.open("Connected to BackEnd.", "Ok");
     }
-    catch(err){
+    catch (err) {
       this._snackBar.open("Can't connect to BackEnd.", "Ok");
       this.status = false;
     }
   }
 
-  async ngOnInit(){
+  async ngOnInit() {
     await this.retry();
-    if(this.status)
+    if (this.status)
       this.interfaces = await this._service.getInterfaces();
     this.interfaces = await this._service.getInterfaces();
-    
+
+    this._service._notification.subscribe((data)=> {
+      console.log(data);
+    })
+  }
+
+  start() {
+    this._service.startListening(this.port_no, this.selected_interface);
   }
 
 }
