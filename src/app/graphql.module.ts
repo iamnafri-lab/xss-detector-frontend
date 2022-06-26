@@ -19,7 +19,7 @@ export function createApollo(httpLink: HttpLink): ApolloClientOptions<any> {
     uri: 'http://localhost:4000/graphql',
   });
   const ws = new WebSocketLink({
-    uri: 'ws://localhost:4000/graphqlws',
+    uri: 'ws://localhost:4000/graphql',
     options: {
       reconnect: true,
     },
