@@ -1,6 +1,6 @@
 
 
-import { AppService } from './app.service';
+import { AppService, ResultI } from './app.service';
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { throwToolbarMixedModesError } from '@angular/material/toolbar';
@@ -17,6 +17,11 @@ export class AppComponent implements OnInit {
   status: boolean = false;
   interfaces: string[] = [];
   port_no: number;
+  started: boolean =false;
+
+  results: ResultI[] = [];
+
+
   constructor(
     private _service: AppService,
     private _snackBar: MatSnackBar,
@@ -46,13 +51,15 @@ export class AppComponent implements OnInit {
       this.interfaces = await this._service.getInterfaces();
     this.interfaces = await this._service.getInterfaces();
 
-    this._service._notification.subscribe((data)=> {
-      console.log(data);
+    this._service._notification.subscribe((data:ResultI)=> {
+        this.results.push(data);
     })
   }
 
   start() {
     this._service.startListening(this.port_no, this.selected_interface);
+    this.started = true;
+    this._snackBar.open(`All Request are being monitored on PORT:${this.port_no} with Interface: ${this.selected_interface}`, "OK");
   }
 
 }
